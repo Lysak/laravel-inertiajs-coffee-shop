@@ -14,7 +14,7 @@ class OrdersQuery extends Query
 {
     protected $attributes = [
         'name' => 'orders',
-        'description' => 'Orders query that can trigger N+1 on nested items/drinks',
+        'description' => 'Orders query with eager loaded nested relations',
     ];
 
     public function type(): Type
@@ -35,6 +35,7 @@ class OrdersQuery extends Query
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
         return Order::query()
+            ->with(['user', 'items.drink'])
             ->latest()
             ->limit($args['limit'])
             ->get()

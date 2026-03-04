@@ -14,7 +14,7 @@ class DrinksQuery extends Query
 {
     protected $attributes = [
         'name' => 'drinks',
-        'description' => 'Catalog drinks (can provoke N+1 when category is requested)',
+        'description' => 'Catalog drinks with eager loaded category',
     ];
 
     public function type(): Type
@@ -35,8 +35,7 @@ class DrinksQuery extends Query
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
         return Drink::query()
-            ->orderBy('name')
-            ->limit($args['limit'])
+            ->catalogWithCategory((int) $args['limit'])
             ->get()
             ->all();
     }

@@ -34,10 +34,10 @@ class DrinksOptimizedQuery extends Query
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
+        // TODO: current `with('category')` prevents N+1 for category relation.
+        // Consider SelectFields/$getSelectFields so relations are eager loaded only when requested by GraphQL fields.
         return Drink::query()
-            ->with('category')
-            ->orderBy('name')
-            ->limit($args['limit'])
+            ->catalogWithCategory((int) $args['limit'])
             ->get()
             ->all();
     }

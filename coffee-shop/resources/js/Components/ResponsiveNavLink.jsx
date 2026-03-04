@@ -1,11 +1,6 @@
-import { Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react'
 
-export default function ResponsiveNavLink({
-    active = false,
-    className = '',
-    children,
-    ...props
-}) {
+export default function ResponsiveNavLink({ active = false, className = '', children, ...props }) {
     return (
         <Link
             {...props}
@@ -17,5 +12,5 @@ export default function ResponsiveNavLink({
         >
             {children}
         </Link>
-    );
+    )
 }

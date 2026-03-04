@@ -13,9 +13,11 @@ use Rebing\GraphQL\Support\Query;
 
 class DrinksWithStatsQuery extends Query
 {
+    public function __construct(private readonly StatsService $statsService) {}
+
     protected $attributes = [
         'name' => 'drinksWithStats',
-        'description' => 'Drinks with per-item stats query (intentionally N+1 style)',
+        'description' => 'Drinks with eager loaded category and batched stats',
     ];
 
     public function type(): Type
@@ -35,22 +37,21 @@ class DrinksWithStatsQuery extends Query
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
-        $statsService = app(StatsService::class);
+        $drinks = Drink::query()
+            ->catalogWithCategory((int) $args['limit'])
+            ->get();
 
-        return Drink::query()
-            ->orderBy('name')
-            ->limit($args['limit'])
-            ->get()
-            ->map(static function (Drink $drink) use ($statsService): array {
-                return [
-                    'id' => $drink->id,
-                    'name' => $drink->name,
-                    'price' => (float) $drink->price,
-                    'is_available' => $drink->is_available,
-                    'category' => $drink->category, // lazy-loaded on purpose for N+1 demonstration
-                    'stats' => $statsService->forDrink($drink->id),
-                ];
-            })
-            ->all();
+        $statsByDrink = $this->statsService->forDrinkIds($drinks->pluck('id')->all());
+
+        return $drinks->map(static function (Drink $drink) use ($statsByDrink): array {
+            return [
+                'id' => $drink->id,
+                'name' => $drink->name,
+                'price' => (float) $drink->price,
+                'is_available' => $drink->is_available,
+                'category' => $drink->category,
+                'stats' => $statsByDrink[$drink->id] ?? ['total_sold' => 0, 'revenue' => 0.0],
+            ];
+        })->all();
     }
 }

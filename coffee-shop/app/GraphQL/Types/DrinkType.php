@@ -46,6 +46,8 @@ class DrinkType extends GraphQLType
                     }
 
                     /** @var Drink $root */
+                    // Fallback query. Can introduce N+1 for drink lists when stats are not preloaded by the resolver.
+                    // Prefer batched preloaded stats (stats.total_sold) or a query with withSum aggregation.
                     return (int) $root->orderItems()->sum('quantity');
                 },
             ],

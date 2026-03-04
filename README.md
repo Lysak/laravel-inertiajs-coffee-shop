@@ -1,8 +1,8 @@
 # Laravel InertiaJS (Coffee Shop)
 
-Цей репозиторій містить застосунок у папці `coffee-shop/`.
+This repository contains the application in the `coffee-shop/` directory.
 
-## Швидкий старт (локально)
+## Quick Start (Local)
 
 ```bash
 cd coffee-shop
@@ -12,7 +12,7 @@ php artisan db:seed
 composer dev
 ```
 
-## Покроково (якщо запускаєш вперше)
+## Step by Step (First Run)
 
 ```bash
 cd coffee-shop
@@ -27,16 +27,16 @@ php artisan db:seed
 composer dev
 ```
 
-## Тестові акаунти
+## Test Accounts
 
 - `admin@example.com` / `password`
 - `barista@example.com` / `password`
 
-## Що запускає `composer dev`
+## What `composer dev` Starts
 
 - Laravel server (`php artisan serve`)
 - Queue worker (`php artisan queue:listen`)
-- Логи (`php artisan pail`)
+- Logs (`php artisan pail`)
 - Vite dev server (`pnpm run dev`)
 
-Після запуску відкрий: `http://127.0.0.1:8000`
+After startup, open: `http://127.0.0.1:8000`

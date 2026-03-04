@@ -1,9 +1,4 @@
-import {
-    Dialog,
-    DialogPanel,
-    Transition,
-    TransitionChild,
-} from '@headlessui/react';
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 
 export default function Modal({
     children,
@@ -14,9 +9,9 @@ export default function Modal({
 }) {
     const close = () => {
         if (closeable) {
-            onClose();
+            onClose()
         }
-    };
+    }
 
     const maxWidthClass = {
         sm: 'sm:max-w-sm',
@@ -24,7 +19,7 @@ export default function Modal({
         lg: 'sm:max-w-lg',
         xl: 'sm:max-w-xl',
         '2xl': 'sm:max-w-2xl',
-    }[maxWidth];
+    }[maxWidth]
 
     return (
         <Transition show={show} leave="duration-200">
@@ -61,5 +56,5 @@ export default function Modal({
                 </TransitionChild>
             </Dialog>
         </Transition>
-    );
+    )
 }

@@ -34,6 +34,8 @@ class OrdersOptimizedQuery extends Query
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
+        // TODO: this eager loading fixes N+1/M+1 for common cases.
+        // Consider SelectFields/$getSelectFields to load only requested relations and reduce overfetching.
         return Order::query()
             ->with(['user', 'items.drink'])
             ->latest()

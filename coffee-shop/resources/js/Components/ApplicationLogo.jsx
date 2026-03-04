@@ -1,10 +1,6 @@
 export default function ApplicationLogo(props) {
     return (
-        <svg
-            {...props}
-            viewBox="0 0 64 64"
-            xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg {...props} viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M18 26h24a2 2 0 0 1 2 2v13a12 12 0 0 1-12 12h-4a12 12 0 0 1-12-12V28a2 2 0 0 1 2-2Z"
                 fill="currentColor"
@@ -25,5 +21,5 @@ export default function ApplicationLogo(props) {
                 strokeLinecap="round"
             />
         </svg>
-    );
+    )
 }

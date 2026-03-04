@@ -1,3 +1,6 @@
+import DataTable from '@/Components/DataTable'
+import PageSection from '@/Components/PageSection'
+import SurfaceCard from '@/Components/SurfaceCard'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import { Head, Link } from '@inertiajs/react'
 
@@ -20,78 +23,53 @@ export default function OrderShow({ order }) {
         >
             <Head title={`Order #${order.id}`} />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="rounded-lg bg-white p-6 shadow-sm">
-                        <div className="grid gap-3 md:grid-cols-4">
-                            <div>
-                                <p className="text-xs uppercase text-gray-500">Customer</p>
-                                <p className="text-sm font-medium text-gray-900">
-                                    {order.customer_name}
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-xs uppercase text-gray-500">Email</p>
-                                <p className="text-sm font-medium text-gray-900">
-                                    {order.customer_email}
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-xs uppercase text-gray-500">Status</p>
-                                <p className="text-sm font-medium text-gray-900">{order.status}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs uppercase text-gray-500">Total</p>
-                                <p className="text-sm font-semibold text-gray-900">
-                                    ${order.total.toFixed(2)}
-                                </p>
-                            </div>
+            <PageSection className="space-y-6">
+                <SurfaceCard className="p-6">
+                    <div className="grid gap-3 md:grid-cols-4">
+                        <div>
+                            <p className="text-xs uppercase text-gray-500">Customer</p>
+                            <p className="text-sm font-medium text-gray-900">
+                                {order.customer_name}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-xs uppercase text-gray-500">Email</p>
+                            <p className="text-sm font-medium text-gray-900">
+                                {order.customer_email}
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-xs uppercase text-gray-500">Status</p>
+                            <p className="text-sm font-medium text-gray-900">{order.status}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs uppercase text-gray-500">Total</p>
+                            <p className="text-sm font-semibold text-gray-900">
+                                ${order.total.toFixed(2)}
+                            </p>
                         </div>
                     </div>
+                </SurfaceCard>
 
-                    <div className="rounded-lg bg-white p-6 shadow-sm">
-                        <h3 className="mb-4 text-lg font-semibold text-gray-900">Items</h3>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead>
-                                    <tr>
-                                        <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-gray-500">
-                                            Drink
-                                        </th>
-                                        <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-gray-500">
-                                            Qty
-                                        </th>
-                                        <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-gray-500">
-                                            Unit price
-                                        </th>
-                                        <th className="px-3 py-2 text-left text-xs font-semibold uppercase text-gray-500">
-                                            Line total
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100 bg-white">
-                                    {order.items.map((item) => (
-                                        <tr key={item.id}>
-                                            <td className="px-3 py-2 text-sm text-gray-700">
-                                                {item.drink_name}
-                                            </td>
-                                            <td className="px-3 py-2 text-sm text-gray-700">
-                                                {item.quantity}
-                                            </td>
-                                            <td className="px-3 py-2 text-sm text-gray-700">
-                                                ${item.unit_price.toFixed(2)}
-                                            </td>
-                                            <td className="px-3 py-2 text-sm font-medium text-gray-900">
-                                                ${item.line_total.toFixed(2)}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <SurfaceCard className="p-6">
+                    <h3 className="mb-4 text-lg font-semibold text-gray-900">Items</h3>
+                    <DataTable>
+                        <DataTable.Head columns={['Drink', 'Qty', 'Unit price', 'Line total']} />
+                        <DataTable.Body>
+                            {order.items.map((item) => (
+                                <DataTable.Row key={item.id}>
+                                    <DataTable.Cell>{item.drink_name}</DataTable.Cell>
+                                    <DataTable.Cell>{item.quantity}</DataTable.Cell>
+                                    <DataTable.Cell>${item.unit_price.toFixed(2)}</DataTable.Cell>
+                                    <DataTable.Cell emphasis>
+                                        ${item.line_total.toFixed(2)}
+                                    </DataTable.Cell>
+                                </DataTable.Row>
+                            ))}
+                        </DataTable.Body>
+                    </DataTable>
+                </SurfaceCard>
+            </PageSection>
         </AuthenticatedLayout>
     )
 }

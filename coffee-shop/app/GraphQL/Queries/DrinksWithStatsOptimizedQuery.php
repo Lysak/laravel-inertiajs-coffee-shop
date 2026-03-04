@@ -13,6 +13,8 @@ use Rebing\GraphQL\Support\Query;
 
 class DrinksWithStatsOptimizedQuery extends Query
 {
+    public function __construct(private readonly StatsService $statsService) {}
+
     protected $attributes = [
         'name' => 'drinksWithStatsOptimized',
         'description' => 'Drinks with eager loaded category and batched stats',
@@ -36,12 +38,10 @@ class DrinksWithStatsOptimizedQuery extends Query
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
         $drinks = Drink::query()
-            ->with('category')
-            ->orderBy('name')
-            ->limit($args['limit'])
+            ->catalogWithCategory((int) $args['limit'])
             ->get();
 
-        $statsByDrink = app(StatsService::class)->forDrinkIds($drinks->pluck('id')->all());
+        $statsByDrink = $this->statsService->forDrinkIds($drinks->pluck('id')->all());
 
         return $drinks->map(static function (Drink $drink) use ($statsByDrink): array {
             return [
