@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Queries;
 
-use App\Models\Order;
+use App\Queries\Orders\GetRecentOrders;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -12,6 +12,10 @@ use Rebing\GraphQL\Support\Query;
 
 class OrdersQuery extends Query
 {
+    public function __construct(private readonly GetRecentOrders $getRecentOrders)
+    {
+    }
+
     protected $attributes = [
         'name' => 'orders',
         'description' => 'Orders query with eager loaded nested relations',
@@ -34,11 +38,6 @@ class OrdersQuery extends Query
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
-        return Order::query()
-            ->with(['user', 'items.drink'])
-            ->latest()
-            ->limit($args['limit'])
-            ->get()
-            ->all();
+        return $this->getRecentOrders->handle($args['limit'])->all();
     }
 }

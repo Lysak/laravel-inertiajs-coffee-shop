@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Queries;
 
-use App\Models\Order;
+use App\Queries\Orders\GetRecentOrders;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Rebing\GraphQL\Support\Facades\GraphQL;
@@ -12,6 +12,10 @@ use Rebing\GraphQL\Support\Query;
 
 class OrdersOptimizedQuery extends Query
 {
+    public function __construct(private readonly GetRecentOrders $getRecentOrders)
+    {
+    }
+
     protected $attributes = [
         'name' => 'ordersOptimized',
         'description' => 'Orders query with eager loading to avoid N+1',
@@ -34,13 +38,7 @@ class OrdersOptimizedQuery extends Query
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo): array
     {
-        // TODO: this eager loading fixes N+1/M+1 for common cases.
-        // Consider SelectFields/$getSelectFields to load only requested relations and reduce overfetching.
-        return Order::query()
-            ->with(['user', 'items.drink'])
-            ->latest()
-            ->limit($args['limit'])
-            ->get()
-            ->all();
+        // TODO: use field-aware loading if GraphQL starts needing different relation graphs per query.
+        return $this->getRecentOrders->handle($args['limit'])->all();
     }
 }
