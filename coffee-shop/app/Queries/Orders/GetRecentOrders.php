@@ -14,6 +14,7 @@ class GetRecentOrders
     {
         return Order::query()
             ->with(['user', 'items.drink'])
+            ->orderByRaw("CASE WHEN status = 'in_progress' THEN 0 WHEN status = 'new' THEN 1 ELSE 2 END")
             ->latest()
             ->limit($limit)
             ->get();

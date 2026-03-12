@@ -21,7 +21,7 @@ readonly class ListOrders
             ->map(fn (Order $order): array => [
                 'id' => $order->id,
                 'status' => $order->status,
-                'customer_name' => $order->user?->name ?? 'Unknown',
+                'customer_name' => $order->customer_name ?? $order->user?->name ?? 'Unknown',
                 'items_count' => $order->items->sum('quantity'),
                 'total' => $order->total,
                 'created_at' => $order->created_at?->toDateTimeString(),

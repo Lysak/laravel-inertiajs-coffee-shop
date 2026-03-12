@@ -19,7 +19,7 @@ class GraphQLTest extends TestCase
         $customer = User::factory()->create(['role' => 'customer']);
         $category = Category::factory()->create();
         $drink = Drink::factory()->create(['category_id' => $category->id]);
-        $order = Order::factory()->create(['user_id' => $customer->id, 'status' => 'new']);
+        $order = Order::factory()->create(['user_id' => $customer->id, 'status' => 'in_progress']);
         OrderItem::factory()->create([
             'order_id' => $order->id,
             'drink_id' => $drink->id,
@@ -85,13 +85,13 @@ class GraphQLTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonPath('data.createOrder.status', 'new')
+            ->assertJsonPath('data.createOrder.status', 'in_progress')
             ->assertJsonPath('data.createOrder.items.0.quantity', 3)
             ->assertJsonPath('data.createOrder.items.0.drink.id', (string) $drink->id);
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $customer->id,
-            'status' => 'new',
+            'status' => 'in_progress',
         ]);
     }
 

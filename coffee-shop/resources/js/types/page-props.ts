@@ -32,6 +32,26 @@ export type OrdersIndexProps = {
     orders: OrderListItem[]
 }
 
+export type OrderCreateDrink = {
+    id: number
+    name: string
+    price: number
+}
+
+export type OrderCreateCategory = {
+    id: number
+    name: string
+    drinks: OrderCreateDrink[]
+}
+
+export type OrderCreateProps = {
+    anonymous_customer: {
+        id: number
+        name: string
+    }
+    categories: OrderCreateCategory[]
+}
+
 export type OrderItem = {
     id: number
     drink_name: string

@@ -19,7 +19,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'status' => fake()->randomElement(['new', 'paid', 'completed', 'canceled']),
+            'status' => fake()->randomElement(['in_progress', 'paid', 'completed', 'canceled']),
         ];
     }
 }

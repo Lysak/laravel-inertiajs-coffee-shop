@@ -15,9 +15,9 @@ class OrderService
     /**
      * @param  array<int, array{drink_id:int, quantity:int}>  $items
      */
-    public function createOrder(User $user, array $items): Order
+    public function createOrder(User $user, array $items, ?string $customerName = null): Order
     {
-        return DB::transaction(function () use ($user, $items): Order {
+        return DB::transaction(function () use ($user, $items, $customerName): Order {
             $normalizedItems = collect($items)
                 ->groupBy('drink_id')
                 ->map(static fn ($lines) => [
@@ -43,7 +43,8 @@ class OrderService
 
             $order = Order::query()->create([
                 'user_id' => $user->id,
-                'status' => 'new',
+                'customer_name' => $customerName,
+                'status' => 'in_progress',
             ]);
 
             foreach ($normalizedItems as $item) {
@@ -63,7 +64,7 @@ class OrderService
 
     public function markPaid(Order $order): Order
     {
-        if ($order->status === 'new') {
+        if (in_array($order->status, ['new', 'in_progress'], true)) {
             $order->update(['status' => 'paid']);
         }
 

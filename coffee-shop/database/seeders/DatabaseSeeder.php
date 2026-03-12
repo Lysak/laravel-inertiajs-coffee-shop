@@ -7,6 +7,7 @@ use App\Models\Drink;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
+use App\Support\CustomerUsers;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +34,8 @@ class DatabaseSeeder extends Seeder
             'role' => 'barista',
             'password' => Hash::make('password'),
         ]);
+
+        CustomerUsers::anonymousCustomer();
 
         $customers = User::factory(8)->create();
         $customers->prepend($admin);
@@ -74,7 +77,7 @@ class DatabaseSeeder extends Seeder
             for ($i = 0; $i < $ordersCount; $i++) {
                 $order = Order::query()->create([
                     'user_id' => $customer->id,
-                    'status' => fake()->randomElement(['new', 'paid', 'completed']),
+                    'status' => fake()->randomElement(['in_progress', 'paid', 'completed']),
                     'created_at' => now()->subDays(fake()->numberBetween(0, 14)),
                     'updated_at' => now(),
                 ]);

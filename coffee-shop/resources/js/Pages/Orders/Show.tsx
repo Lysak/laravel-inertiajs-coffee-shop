@@ -36,7 +36,7 @@ export default function OrderShow({ order }: OrderShowProps) {
                         <div>
                             <p className="text-xs uppercase text-gray-500">Email</p>
                             <p className="text-sm font-medium text-gray-900">
-                                {order.customer_email}
+                                {order.customer_email ?? 'No card attached'}
                             </p>
                         </div>
                         <div>

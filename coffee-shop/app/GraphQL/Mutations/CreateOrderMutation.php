@@ -55,6 +55,6 @@ class CreateOrderMutation extends Mutation
             ]);
         }
 
-        return app(OrderService::class)->createOrder($user, $input['items']);
+        return app(OrderService::class)->createOrder($user, $input['items'], $input['customer_name'] ?? null);
     }
 }

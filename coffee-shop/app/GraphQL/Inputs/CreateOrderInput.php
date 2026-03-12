@@ -24,6 +24,10 @@ class CreateOrderInput extends InputType
                 'type' => Type::id(),
                 'rules' => ['nullable', 'exists:users,id'],
             ],
+            'customer_name' => [
+                'type' => Type::string(),
+                'rules' => ['nullable', 'string', 'max:255'],
+            ],
             'items' => [
                 'type' => Type::nonNull(
                     Type::listOf(Type::nonNull($this->nullableType('CreateOrderItemInput'))),

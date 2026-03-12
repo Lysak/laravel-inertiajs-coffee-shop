@@ -27,10 +27,10 @@ export default function Dashboard({ stats, recentOrders, graphqlEndpoint }: Dash
                     <div className="mb-4 flex items-center justify-between">
                         <h3 className="text-lg font-semibold text-gray-900">Recent orders</h3>
                         <Link
-                            href={route('orders.index')}
+                            href={route('orders.create')}
                             className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                         >
-                            View all
+                            Start order
                         </Link>
                     </div>
 
